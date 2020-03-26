@@ -28,8 +28,13 @@ class UserController extends Controller
             'semestreUser' => 'required|digits_between:1,2',
             'edadUser' => 'required|digits_between:1,2',
         ];
-        //$this->validate($request, $rules);
-        $user = User::create($request->all());
+
+        $this->validate($request, $rules);
+
+        $fields = $request->all();
+        $fields['password'] = bcrypt($request->password);
+
+        $user = User::create($fields);
 
         return response()->json($user, 201);
     }

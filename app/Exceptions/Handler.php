@@ -104,4 +104,9 @@ class Handler extends ExceptionHandler
         }
         return parent::render($request, $exception);
     }
+
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request){
+        $errors = $e->validator->errors()->getMessages();
+        return response()->json(['error' => $errors], 422);
+    }
 }
